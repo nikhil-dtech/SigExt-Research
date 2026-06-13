@@ -289,10 +289,9 @@ def main():
     )
 
     trainer = pl.Trainer(
-        max_epochs=10,
+        max_epochs=1,
         callbacks=[checkpoint_callback],
         default_root_dir=args.checkpoint_dir,
-        strategy="ddp_find_unused_parameters_true",
         log_every_n_steps=1,
     )
 

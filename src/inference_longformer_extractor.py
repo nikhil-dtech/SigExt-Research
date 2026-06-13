@@ -3,6 +3,7 @@ import copy
 import glob
 import logging
 import pathlib
+import torch
 
 import jsonlines
 import pytorch_lightning as pl
@@ -60,7 +61,8 @@ def main():
     logging.info(f"Using f{best_checkpoint}")
     model = KeywordExtractorClf.load_from_checkpoint(best_checkpoint, base_model="allenai/longformer-base-4096")
 
-    trainer = pl.Trainer(devices=1, accelerator="gpu")
+    device = "gpu" if torch.cuda.is_available() else "cpu"
+    trainer = pl.Trainer(accelerator=device, devices=1)
 
     dataset_dir = pathlib.Path(args.dataset_dir).expanduser()
     output_dir = pathlib.Path(args.output_dir).expanduser()
